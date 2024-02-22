@@ -11,12 +11,11 @@ from unittest.mock import patch, Mock
 class TestGithubOrgClient(unittest.TestCase):
     """Test cases for the GithubOrgClient class."""
 
-    @parameterized.expand(
-        [
+    @parameterized.expand([
             ("google"),
             ("abc"),
-        ]
-    )
+        ])
+    @patch("client.get_json", return_value={"payload": True})
     def test_org(self, org_name, mock_get):
         """Test the org method of GithubOrgClient."""
         self.assertEqual(GithubOrgClient(org_name).org, {"payload": True})
