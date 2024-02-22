@@ -5,7 +5,7 @@ This script contains test cases for the GithubOrgClient class.
 import unittest
 from parameterized import parameterized
 from client import GithubOrgClient
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 
 
 class TestGithubOrgClient(unittest.TestCase):
