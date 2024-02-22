@@ -67,7 +67,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             Mock(json=Mock(return_value=cls.org_payload)),
             Mock(json=Mock(return_value=cls.repos_payload))
             ]
-        cls.client = GithubOrgClient('google')
 
     @classmethod
     def tearDownClass(cls):
