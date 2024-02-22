@@ -4,6 +4,7 @@
 import unittest
 from parameterized import parameterized
 from client import GithubOrgClient
+from unittest.mock import patch
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -13,6 +14,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google"),
         ("abc"),
     ])
+    @patch('client.GithubOrgClient.get_json')
     def test_org(self, org_name, mock_get_json):
         """Test the org method of GithubOrgClient."""
         mock_get_json.return_value = {"name": org_name}
