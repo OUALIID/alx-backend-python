@@ -49,7 +49,7 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     def test_has_license(self, repo_info, license_key, expected_result):
         """Test the has_license method of GithubOrgClient."""
-        result = GithubOrgClient().has_license(repo_info, license_key)
+        result = GithubOrgClient("org_name").has_license(repo_info, license_key)
         self.assertEqual(result, expected_result)
 
 if __name__ == '__main__':
