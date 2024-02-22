@@ -3,9 +3,10 @@
 This script contains test cases for the GithubOrgClient class.
 """
 import unittest
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch, Mock, PropertyMock
+from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -51,6 +52,27 @@ class TestGithubOrgClient(unittest.TestCase):
         """Test the has_license method of GithubOrgClient."""
         result = GithubOrgClient("org_name").has_license(repo_info, license_key)
         self.assertEqual(result, expected_result)
+
+
+@parameterized_class(("org_payload", "repos_payload",
+                      "expected_repos", "apache2_repos"), TEST_PAYLOAD)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """Integration tests for GithubOrgClient class."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.get_patcher = patch('requests.get')
+        cls.mock_get = cls.get_patcher.start()
+        cls.mock_get.side_effect = [
+            Mock(json=Mock(return_value=cls.org_payload)),
+            Mock(json=Mock(return_value=cls.repos_payload))
+            ]
+        cls.client = GithubOrgClient('google')
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.get_patcher.stop()
+
 
 if __name__ == '__main__':
     unittest.main()
