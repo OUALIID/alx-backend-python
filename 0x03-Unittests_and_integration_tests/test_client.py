@@ -26,7 +26,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
     def test_public_repos_url(self):
         """Test the _public_repos_url method of GithubOrgClient."""
-        with patch.object(GithubOrgClient, "org") as mock_org:
+        with patch.object(GithubOrgClient, "org"):
             result = GithubOrgClient("google")._public_repos_url()
             expected_result = "https://api.github.com/orgs/google/repos"
             self.assertEqual(result, expected_result)
