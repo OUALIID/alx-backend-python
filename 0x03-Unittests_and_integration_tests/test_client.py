@@ -35,7 +35,7 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch("client.GithubOrgClient._public_repos_url",
            return_value="https://api.github.com/orgs/google/repos")
     @patch("client.get_json",
-        return_value=[{'name': 'repo1'}, {'name': 'repo2'}])
+           return_value=[{'name': 'repo1'}, {'name': 'repo2'}])
     def test_public_repos(self, mock_public_repos_url, mock_get_json):
         """Test the public_repos method of the GithubOrgClient class."""
         repos = GithubOrgClient("google").public_repos()
