@@ -32,17 +32,18 @@ class TestGithubOrgClient(unittest.TestCase):
             expected_result = "https://api.github.com/orgs/google/repos"
             self.assertEqual(result, expected_result)
 
-    @patch("Client.GithubOrgClient._public_repos_url",
-           return_value="https://api.github.com/orgs/testorg/repos")
-    @patch("Client.get_json",
-           return_value=[{'name': 'repo1'}, {'name': 'repo2'}])
+    @patch("client.GithubOrgClient._public_repos_url",
+       return_value="https://api.github.com/orgs/testorg/repos")
+    @patch("client.get_json",
+        return_value=[{'name': 'repo1'}, {'name': 'repo2'}])
+
     def test_public_repos(self, mock_public_repos_url, mock_get_json):
         """Test the public_repos method of the GithubOrgClient class."""
         repos = GithubOrgClient("google").public_repos()
         expect = [{'name': 'repo1'}, {'name': 'repo2'}]
+        self.assertEqual(repos, expect)
         mock_public_repos_url.assert_called_once()
         mock_get_json.assert_called_once()
-        self.assertEqual(repos, expect)
 
 
 if __name__ == '__main__':
