@@ -1,23 +1,28 @@
 #!/usr/bin/env python3
-""" Test cases for the GithubOrgClient class.
+"""
+This script contains test cases for the GithubOrgClient class.
 """
 import unittest
 from parameterized import parameterized
 from client import GithubOrgClient
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 
 class TestGithubOrgClient(unittest.TestCase):
     """Test cases for the GithubOrgClient class."""
 
-    @parameterized.expand([
-        ("google",),
-        ("abc",),
-    ])
-    @patch('client.GithubOrgClient.get_json')
-    def test_org(self, org_name, mock_get_json):
+    @parameterized.expand(
+        [
+            ("google"),
+            ("abc"),
+        ]
+    )
+    def test_org(self, org_name, mock_get):
         """Test the org method of GithubOrgClient."""
-        mock_get_json.return_value = {"name": org_name}
-        self.assertEqual(GithubOrgClient(org_name).org(), {"name": org_name})
-        url = f'https://api.github.com/orgs/{org_name}'
-        mock_get_json.assert_called_once_with(url)
+        self.assertEqual(GithubOrgClient(org_name).org, {"payload": True})
+        url = f"https://api.github.com/orgs/{org_name}"
+        mock_get.assert_called_once_with(url)
+
+
+if __name__ == '__main__':
+    unittest.main()
