@@ -39,7 +39,7 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_public_repos(self, mock_public_repos_url, mock_get_json):
         """Test the public_repos method of the GithubOrgClient class."""
         repos = GithubOrgClient("google").public_repos()
-        expect = "https://api.github.com/orgs/google/repos"
+        expect = ["repo1", "repo2"]
         mock_public_repos_url.assert_called_once()
         mock_get_json.assert_called_once()
         self.assertEqual(repos, expect)
