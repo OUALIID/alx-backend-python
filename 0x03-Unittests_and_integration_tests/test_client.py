@@ -5,7 +5,7 @@ This script contains test cases for the GithubOrgClient class.
 import unittest
 from parameterized import parameterized
 from client import GithubOrgClient
-from unittest.mock import patch
+from unittest.mock import patch, PropertyMock
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -32,17 +32,15 @@ class TestGithubOrgClient(unittest.TestCase):
             expected_result = "https://api.github.com/orgs/google/repos"
             self.assertEqual(result, expected_result)
 
+    @patch("client.get_json")
     @patch("client.GithubOrgClient._public_repos_url",
-           return_value="https://api.github.com/orgs/google/repos")
-    @patch("client.get_json",
-           return_value=[{'name': 'repo1'}, {'name': 'repo2'}])
+           new_callable=PropertyMock)
     def test_public_repos(self, mock_public_repos_url, mock_get_json):
-        """Test the public_repos method of the GithubOrgClient class."""
-        repos = GithubOrgClient("google").public_repos()
-        expect = ["repo1", "repo2"]
-        mock_public_repos_url.assert_called_once()
-        mock_get_json.assert_called_once()
-        self.assertEqual(repos, expect)
+        mock_public_repos_url.return_value = "url"
+        mock_get_json.return_value = [{'name': 'repo1'}, {'name': 'repo2'}]
+        repos = GithubOrgClient("name").public_repos()
+        self.assertEqual(repos, [{'name': 'repo1'}, {'name': 'repo2'}])
+        mock_get_json.assert_called_once_with("url")
 
 
 if __name__ == '__main__':
