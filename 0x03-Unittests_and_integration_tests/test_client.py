@@ -35,15 +35,22 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch("client.get_json")
     def test_public_repos(self, mock_get):
         """Test the public_repos method of the GithubOrgClient class."""
-        mock_get.return_value = [{'name': 'repo1'}, {'name': 'repo2'}]
         with patch("client.GithubOrgClient._public_repos_url",
-                   new_callable=PropertyMock) as mock_property:
-            mock_property.return_value = "url"
+                   new_callable=PropertyMock, return_value = "url"):
+            mock_get.return_value = [{'name': 'repo1'}, {'name': 'repo2'}]
             list_repos = GithubOrgClient("name").public_repos()
+            self.assertEqual(list_repos, ["repo1", "repo2"])
+            mock_get.assert_called_once_with("url")
 
-        self.assertEqual(list_repos, ["repo1", "repo2"])
-        mock_get.assert_called_once_with("url")
 
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
+    ])
+    def test_has_license(self, repo_info, license_key, expected_result):
+        """Test the has_license method of GithubOrgClient."""
+        result = GithubOrgClient().has_license(repo_info, license_key)
+        self.assertEqual(result, expected_result)
 
 if __name__ == '__main__':
     unittest.main()
