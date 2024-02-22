@@ -30,7 +30,6 @@ class TestGithubOrgClient(unittest.TestCase):
             result = GithubOrgClient("google")._public_repos_url()
             expected_result = "https://api.github.com/orgs/google/repos"
             self.assertEqual(result, expected_result)
-        
 
 
 if __name__ == '__main__':
