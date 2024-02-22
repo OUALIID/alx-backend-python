@@ -3,10 +3,10 @@
 This script contains test cases for the GithubOrgClient class.
 """
 import unittest
-from parameterized import parameterized, parameterized_class
+from fixtures import TEST_PAYLOAD
 from client import GithubOrgClient
 from unittest.mock import patch, Mock, PropertyMock
-from fixtures import TEST_PAYLOAD
+from parameterized import parameterized, parameterized_class
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -67,6 +67,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             Mock(json=Mock(return_value=cls.org_payload)),
             Mock(json=Mock(return_value=cls.repos_payload))
             ]
+        cls.client = GithubOrgClient('google')
 
     @classmethod
     def tearDownClass(cls):
